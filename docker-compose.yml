@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  api:
+    build: 
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "8050:8050"
+    networks:
+      - app-net
+
+  prometheus:
+    build: 
+      context: ./prometheus
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    networks:
+      - app-net
+
+  grafana:
+    build: 
+      context: ./grafana
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - app-net
+
+networks:
+  app-net:
+      name: nat
